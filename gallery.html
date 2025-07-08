@@ -1,393 +1,196 @@
-‎<!DOCTYPE html>
-
-‎<html lang="en">
-
-‎<head>
-
-‎  <meta charset="UTF-8" />
-
-‎  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-‎  <title>Creature Gallery</title>
-
-‎  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Raleway&display=swap" rel="stylesheet">
-
-‎  <style>
-
-‎    body {
-
-‎      font-family: 'Raleway', sans-serif;
-
-‎      background-color: #f5f5f7;
-
-‎      color: #1d1d1f;
-
-‎      margin: 0;
-
-‎      padding-top: 80px;
-
-‎    }
-
-‎    nav {
-
-‎      background-color: #eaeaea;
-
-‎      padding: 20px 40px;
-
-‎      position: fixed;
-
-‎      width: 100%;
-
-‎      top: 0;
-
-‎      z-index: 100;
-
-‎      display: flex;
-
-‎      justify-content: center;
-
-‎      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-
-‎    }
-
-‎    nav a {
-
-‎      color: #1d1d1f;
-
-‎      text-decoration: none;
-
-‎      margin: 0 30px;
-
-‎      font-weight: 600;
-
-‎      font-size: 1rem;
-
-‎    }
-
-‎    h1 {
-
-‎      text-align: center;
-
-‎      font-family: 'Cinzel Decorative', cursive;
-
-‎      margin-bottom: 40px;
-
-‎    }
-
-‎    .gallery {
-
-‎      display: grid;
-
-‎      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
-‎      gap: 30px;
-
-‎      padding: 0 40px 40px;
-
-‎    }
-
-‎    .card {
-
-‎      background-color: white;
-
-‎      border-radius: 16px;
-
-‎      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-
-‎      overflow: hidden;
-
-‎      transition: transform 0.3s;
-
-‎      cursor: pointer;
-
-‎    }
-
-‎    .card:hover {
-
-‎      transform: translateY(-10px);
-
-‎    }
-
-‎    .card img {
-
-‎      width: 100%;
-
-‎      height: 180px;
-
-‎      object-fit: cover;
-
-‎    }
-
-‎    .card-content {
-
-‎      padding: 20px;
-
-‎    }
-
-‎    .card h2 {
-
-‎      margin: 0 0 10px;
-
-‎    }
-
-‎    .card p {
-
-‎      color: #555;
-
-‎    }
-
-‎    .modal {
-
-‎      display: none;
-
-‎      position: fixed;
-
-‎      top: 0;
-
-‎      left: 0;
-
-‎      width: 100%;
-
-‎      height: 100%;
-
-‎      background-color: rgba(0, 0, 0, 0.7);
-
-‎      z-index: 200;
-
-‎      justify-content: center;
-
-‎      align-items: center;
-
-‎    }
-
-‎    .modal-content {
-
-‎      background-color: white;
-
-‎      padding: 30px;
-
-‎      border-radius: 10px;
-
-‎      max-width: 800px;
-
-‎      text-align: center;
-
-‎    }
-
-‎    .modal img {
-
-‎      width: 100%;
-
-‎      height: 300px;
-
-‎      object-fit: cover;
-
-‎      margin-bottom: 20px;
-
-‎    }
-
-‎    .modal button {
-
-‎      background-color: #1d1d1f;
-
-‎      color: white;
-
-‎      padding: 10px 20px;
-
-‎      border-radius: 5px;
-
-‎      border: none;
-
-‎      cursor: pointer;
-
-‎    }
-
-‎    .modal button:hover {
-
-‎      background-color: #333;
-
-‎    }
-
-‎  </style>
-
-‎</head>
-
-‎<body>
-
-‎  <nav>
-
-‎    <a href="index.html">Home</a>
-
-‎    <a href="gallery.html">Gallery</a>
-
-‎    <a href="create.html">Create</a>
-
-‎    <a href="contact.html">Contact</a>
-
-‎  </nav>
-
-‎
-
-‎  <h1>Creature Gallery</h1>
-
-‎  <div class="gallery" id="galleryContainer"></div>
-
-‎
-
-‎  <div id="creatureModal" class="modal">
-
-‎    <div class="modal-content">
-
-‎      <img id="modalImage" src="" alt="">
-
-‎      <h2 id="modalTitle"></h2>
-
-‎      <p id="modalDescription"></p>
-
-‎      <button onclick="closeModal()">Close</button>
-
-‎    </div>
-
-‎  </div>
-
-‎
-
-‎  <script>
-
-‎    const creatures = [
-
-‎      {
-
-‎        name: 'Skyfire Drake',
-
-‎        img: 'https://i.postimg.cc/wBxSKL07/image.png',
-
-‎        short: 'Thunderclouds and fire streaks',
-
-‎        long: 'Feeds on thunderclouds and blazes across skies in fire streaks. The Skyfire Drake is a majestic, fire-breathing creature that moves with the power of thunderous clouds.'
-
-‎      },
-
-‎      {
-
-‎        name: 'Whispercat',
-
-‎        img: 'https://i.postimg.cc/8zXb5vTF/image.png',
-
-‎        short: 'Shadows and silent messages',
-
-‎        long: 'Can melt into shadows and send silent messages to the moon. Its moonlit fur shimmers as it moves in silence.'
-
-‎      },
-
-‎      {
-
-‎        name: 'Frostfin Leviathan',
-
-‎        img: 'https://i.postimg.cc/jjGQ6rwt/image.png',
-
-‎        short: 'Freezes oceans with a blink',
-
-‎        long: 'A colossal sea serpent with icy scales that shimmer in blue. It can freeze entire oceans with a single blink.'
-
-‎      },
-
-‎      {
-
-‎        name: 'Emberwolf',
-
-‎        img: 'https://i.postimg.cc/jq6QfmsY/image.png',
-
-‎        short: 'Blazing fur and lunar howl',
-
-‎        long: 'Its fur burns like embers, and its howl controls fire under moonlight. Emberwolf is feared and revered among forest spirits.'
-
-‎      },
-
-‎      {
-
-‎        name: 'Petalbreeze Kirin',
-
-‎        img: 'https://i.postimg.cc/kXnNvs46/image.png',
-
-‎        short: 'Petals and wind whispering',
-
-‎        long: 'A gentle creature that rides on cherry blossom winds. The Petalbreeze Kirin brings good fortune to those it passes.'
-
-‎      },
-
-‎      {
-
-‎        name: 'Lovely',
-
-‎        img: 'https://i.postimg.cc/SQWSSQrb/IMG-20250627-225234.jpg',
-
-‎        short: 'Pokemon with anger issues',
-
-‎        long: 'Invalid Crashouts, disturbing element, has no decency for forgiving her brother, has sone serious issues with her anger, overall appokemon- a very naughty one.'
-
-‎      }
-
-‎    ];
-
-‎
-
-‎    const gallery = document.getElementById('galleryContainer');
-
-‎
-
-‎    creatures.forEach(c => {
-
-‎      const card = document.createElement('div');
-
-‎      card.className = 'card';
-
-‎      card.onclick = () => openModal(c.name, c.img, c.long);
-
-‎
-
-‎      card.innerHTML = `
-
-‎        <img src="${c.img}" alt="${c.name}">
-
-‎        <div class="card-content">
-
-‎          <h2>${c.name}</h2>
-
-‎          <p>${c.short}</p>
-
-‎        </div>
-
-‎      `;
-
-‎      gallery.appendChild(card);
-
-‎    });
-
-‎
-
-‎    function openModal(title, imgSrc, description) {
-
-‎      document.getElementById("modalTitle").innerText = title;
-
-‎      document.getElementById("modalImage").src = imgSrc;
-
-‎      document.getElementById("modalDescription").innerText = description;
-
-‎      document.getElementById("creatureModal").style.display = "flex";
-
-‎    }
-
-‎
-
-‎    function closeModal() {
-
-‎      document.getElementById("creatureModal").style.display = "none";
-
-‎    }
-
-‎  </script>
-
-‎</body>
-
-‎</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creature Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Raleway&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Raleway', sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      margin: 0;
+      padding-top: 80px;
+    }
+    nav {
+      background-color: #eaeaea;
+      padding: 20px 40px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    nav a {
+      color: #1d1d1f;
+      text-decoration: none;
+      margin: 0 30px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    h1 {
+      text-align: center;
+      font-family: 'Cinzel Decorative', cursive;
+      margin-bottom: 40px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 0 40px 40px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 20px;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+    }
+    .card p {
+      color: #555;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 800px;
+      text-align: center;
+    }
+    .modal img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    .modal button {
+      background-color: #1d1d1f;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    .modal button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="create.html">Create</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <h1>Creature Gallery</h1>
+  <div class="gallery" id="galleryContainer"></div>
+
+  <div id="creatureModal" class="modal">
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDescription"></p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const creatures = [
+      {
+        name: 'Skyfire Drake',
+        img: 'https://i.postimg.cc/wBxSKL07/image.png',
+        short: 'Thunderclouds and fire streaks',
+        long: 'Feeds on thunderclouds and blazes across skies in fire streaks. The Skyfire Drake is a majestic, fire-breathing creature that moves with the power of thunderous clouds.'
+      },
+      {
+        name: 'Whispercat',
+        img: 'https://i.postimg.cc/8zXb5vTF/image.png',
+        short: 'Shadows and silent messages',
+        long: 'Can melt into shadows and send silent messages to the moon. Its moonlit fur shimmers as it moves in silence.'
+      },
+      {
+        name: 'Frostfin Leviathan',
+        img: 'https://i.postimg.cc/jjGQ6rwt/image.png',
+        short: 'Freezes oceans with a blink',
+        long: 'A colossal sea serpent with icy scales that shimmer in blue. It can freeze entire oceans with a single blink.'
+      },
+      {
+        name: 'Emberwolf',
+        img: 'https://i.postimg.cc/jq6QfmsY/image.png',
+        short: 'Blazing fur and lunar howl',
+        long: 'Its fur burns like embers, and its howl controls fire under moonlight. Emberwolf is feared and revered among forest spirits.'
+      },
+      {
+        name: 'Petalbreeze Kirin',
+        img: 'https://i.postimg.cc/kXnNvs46/image.png',
+        short: 'Petals and wind whispering',
+        long: 'A gentle creature that rides on cherry blossom winds. The Petalbreeze Kirin brings good fortune to those it passes.'
+      },
+      {
+        name: 'Lovely',
+        img: 'https://i.postimg.cc/SQWSSQrb/IMG-20250627-225234.jpg',
+        short: 'Pokemon with anger issues',
+        long: 'Invalid Crashouts, disturbing element, has no decency for forgiving her brother, has some serious issues with her anger, overall a pokemon- a very naughty one.'
+      }
+    ];
+
+    const gallery = document.getElementById('galleryContainer');
+
+    creatures.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.onclick = () => openModal(c.name, c.img, c.long);
+      card.innerHTML = `
+        <img src="${c.img}" alt="${c.name}">
+        <div class="card-content">
+          <h2>${c.name}</h2>
+          <p>${c.short}</p>
+        </div>
+      `;
+      gallery.appendChild(card);
+    });
+
+    function openModal(title, imgSrc, description) {
+      document.getElementById("modalTitle").innerText = title;
+      document.getElementById("modalImage").src = imgSrc;
+      document.getElementById("modalDescription").innerText = description;
+      document.getElementById("creatureModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("creatureModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
